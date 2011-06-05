@@ -2,19 +2,21 @@
 
 # SVTGet v0.1
 # Updates can be found at http://svtget.se/
-# Support with Flattr: 
+# Support the project with Flattr: https://flattr.com/thing/300374/SVT-Get-a-local-cache-tool-for-SVT-Play
 #
 # Description: The script can download the RTMP streams available from the
 # online streaming service "SVT Play", managed by Sveriges Television
 #
 # Original author: Mikael "MMN-o" Nordfeldth
+# License: GPLv3
+# http://www.gnu.org/licenses/gpl-3.0.txt
+#
 # URL: http://blog.mmn-o.se/
 # Flattr: https://flattr.com/thing/188162/MMN-o-on-Flattr
-# Bitcoin: 1Nt5H47TU76pFpnaX6FQQvzLoS6F4sXC3Y
 
 # Changelog:
-# v0.1:
-#
+# -- v0.1
+#    * Initial functionality. Normal links seem to be working.
 
 # Sample usage:
 # ./svtget.sh http://svtplay.se/v/2440756/k_special/presspauseplay
@@ -41,9 +43,6 @@ TMP_FILE="/tmp/svtget.$$"
 curl -s "$1" -o "$TMP_FILE"
 SVTPLAY_SWF="http://svtplay.se$(grep 'application/x-shockwave-flash' $TMP_FILE | cut -d\" -f4)"
 SVTGET_STREAMS=$(sed "s/\(rtmp:[^|]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" $TMP_FILE | grep rtmp | sort | uniq )
-echo ----------------------
-echo $SVTGET_STREAMS
-echo ----------------------
 rm "$TMP_FILE"
 
 if [ -z "$SVTGET_STREAMS" ]; then
@@ -52,7 +51,7 @@ if [ -z "$SVTGET_STREAMS" ]; then
 	exit 1
 fi
 
-echo "Using SWF for rtmpdump --swfVfy: $SVTPLAY_SWF"
+#echo "Using SWF for rtmpdump --swfVfy: $SVTPLAY_SWF"
 
 echo "#  Bitrate	Filename"
 let n=0
@@ -73,7 +72,7 @@ done
 stream=0
 while [ -z ${Streams[$stream]} ]; do
 	echo ""
-	echo "Which file do you want? [#] "
+	echo -n "Which file do you want? [#] "
 	read stream
 	if [ -n "$stream" ] && [ "q" == "$stream" ]; then
 		exit
