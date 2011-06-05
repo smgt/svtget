@@ -42,7 +42,7 @@ fi
 TMP_FILE="/tmp/svtget.$$"
 curl -s "$1" -o "$TMP_FILE"
 SVTPLAY_SWF="http://svtplay.se$(grep 'application/x-shockwave-flash' $TMP_FILE | cut -d\" -f4)"
-SVTGET_STREAMS=$(sed "s/\(rtmp:[^|]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" $TMP_FILE | grep rtmp | sort | uniq )
+SVTGET_STREAMS=$(sed "s/\(rtmp[e]\?:[^|]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" $TMP_FILE | grep rtmp | sort | uniq )
 rm "$TMP_FILE"
 
 if [ -z "$SVTGET_STREAMS" ]; then
