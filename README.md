@@ -13,6 +13,7 @@ Hur laddar jag ner från SVT Play?
 I mjukvarans nuvarande stadie behöver du köra ett POSIX-kompatibelt operativsystem där man kan installera de fria mjukvarorna bash, curl och rtmpdump. Absolut mest rekommenderat är Ubuntu Linux, ett gratis och fritt operativsystem som installeras på en timme eller så. Ett annat tips är att be någon datornörd i din närhet att hjälpa till.
 
 När du använder Linuxmiljön behöver du bara ladda hem scriptet och starta det med en adress till SVT Play:
+
 	$ wget "https://github.com/mmn/svtget/raw/master/bash/svtget.sh"
 	$ bash svtget.sh http://svtplay.se/v/2440756/k_special/presspauseplay
 	# Bitrate Filename 
