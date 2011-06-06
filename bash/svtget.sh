@@ -24,8 +24,16 @@
 DEPENDENCIES="rtmpdump curl"
 for DEP in $DEPENDENCIES; do
 	if [ -z "`which $DEP`" ]; then
-		echo "ERROR: Dependency '$DEP' not in PATH. If you're running Debian/Ubuntu, ask your administrator or do:"
-		echo "sudo apt-get install $DEPENDENCIES"
+		if [ ! -z "`which lsb_release`" ]; then
+			if [[ "`lsb_release -s -i`" == "Ubuntu" ]]; then
+				echo "You are missing '$DEP' so I'm going to fetch it now using apt-get"
+				sudo apt-get -y install $DEPENDENCIES
+				break
+			fi
+		else
+			echo "ERROR: Missing dependency '$DEP'."
+			exit
+		fi
 	fi
 done
 
