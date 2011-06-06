@@ -15,11 +15,13 @@
 # Flattr: https://flattr.com/thing/188162/MMN-o-on-Flattr
 
 # Changelog:
+# -- v0.1.1
+#    * deb package created by sikevux, small fixes on other stuff
 # -- v0.1
 #    * Initial functionality. Normal links seem to be working.
 
 # Sample usage:
-# ./svtget.sh http://svtplay.se/v/2440756/k_special/presspauseplay
+# ./svtget http://svtplay.se/v/2440756/k_special/presspauseplay
 
 DEPENDENCIES="rtmpdump curl"
 for DEP in $DEPENDENCIES; do
