@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SVTGet v0.1
+# SVTGet v0.1.1
 # Updates can be found at http://svtget.se/
 # Support the project with Flattr: https://flattr.com/thing/300374/SVT-Get-a-local-cache-tool-for-SVT-Play
 #
@@ -24,8 +24,8 @@
 DEPENDENCIES="rtmpdump curl"
 for DEP in $DEPENDENCIES; do
 	if [ -z "`which $DEP`" ]; then
-		echo "ERROR: Dependency '$DEP' not in PATH. If you're running Debian/Ubuntu, ask your administrator or do:"
-		echo "sudo apt-get install $DEPENDENCIES"
+		echo "ERROR: Missing dependency '$DEP'."
+		exit
 	fi
 done
 

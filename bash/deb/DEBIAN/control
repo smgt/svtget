@@ -1,0 +1,11 @@
+Package: svtget
+Priority: optional
+Section: misc
+Homepage: http://svtget.se
+Maintainer: Patrik Greco <sikevux@sikevux.se>
+Architecture: all
+Version: 0.1.1
+Depends: rtmpdump, curl
+Description: Get clips from SVTPlay
+ A simple program that allows the user to download clips from SVTPlay
+

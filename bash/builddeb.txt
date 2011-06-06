@@ -1,0 +1,5 @@
+HOWTO:
+
+Basically copy the file to deb/usr/bin/
+Edit in the control files located in deb/DEBIAN/
+and then bang in dpkg -b ./deb svtget.version.deb
