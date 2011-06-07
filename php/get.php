@@ -60,7 +60,7 @@ function get_rtmp_streams($html) {
 try {
 	$url = svtget_parse_url($_GET['url']);
 	$html = get_url_contents($url);
-	$swfurl = get_swf_url($html);
+	$swf_url = get_swf_url($html);
 	$streams = get_rtmp_streams($html);
 } catch (Exception $e) {
 	http_error(400, $e->getmessage());
@@ -69,6 +69,7 @@ try {
 	$program_name = basename($url);
 	$svtget_result = array(
 		'program_name' => $program_name,
+		'swf_url' => $swf_url,
 		'streams' => $streams,
 		);
 
