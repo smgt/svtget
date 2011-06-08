@@ -1,19 +1,19 @@
 SVT Get
 ==========
-"Ladda ner från SVT Play" in Swedish, SVT Get is a free software tool to make local cache files of SVT Play web streams, available from SVTPlay.se
+"Ladda ner frÃ¥n SVT Play" in Swedish, SVT Get is a free software tool to make local cache files of SVT Play web streams, available from SVTPlay.se
 
 
 Bitcoin address: 1Nt5H47TU76pFpnaX6FQQvzLoS6F4sXC3Y
 
 
-Vad gör SVT Get?
+Vad gÃ¶r SVT Get?
 ====================
-Eftersom SVT Get är fri mjukvara kan du granska källkoden direkt. För närvarande fungerar det genom att använda sig av andra fria mjukvaror, såsom bash, curl och rtmpdump, för att ladda hem och tolka hemsidan SVTPlay.se.
+Eftersom SVT Get Ã¤r fri mjukvara kan du granska kÃ¤llkoden direkt. FÃ¶r nÃ¤rvarande fungerar det genom att anvÃ¤nda sig av andra fria mjukvaror, sÃ¥som bash, curl och rtmpdump, fÃ¶r att ladda hem och tolka hemsidan SVTPlay.se.
 
-Hos SVT Play så finns all information man behöver för att ladda hem deras videoklipp. Det känns ganska självklart egentligen, men många tror att "streaming" är något annat än "nedladdning" - men oavsett vad du gör så får du hem informationen till din dator. Kan du se det kan du kopiera det - alltså kan vi spara ner informationen på din dator. Att det sedan blir en perfekt digital kopia är bara en bonus av kopimi.
-Hur laddar jag ner från SVT Play?
-I mjukvarans nuvarande stadie behöver du köra ett POSIX-kompatibelt operativsystem där man kan installera de fria mjukvarorna bash, curl och rtmpdump. Absolut mest rekommenderat är Ubuntu Linux, ett gratis och fritt operativsystem som installeras på en timme eller så. Ett annat tips är att be någon datornörd i din närhet att hjälpa till.
-När du använder Linuxmiljön behöver du bara ladda hem scriptet och starta det med en adress till SVT Play:
+Hos SVT Play sÃ¥ finns all information man behÃ¶ver fÃ¶r att ladda hem deras videoklipp. Det kÃ¤nns ganska sjÃ¤lvklart egentligen, men mÃ¥nga tror att "streaming" Ã¤r nÃ¥got annat Ã¤n "nedladdning" - men oavsett vad du gÃ¶r sÃ¥ fÃ¥r du hem informationen till din dator. Kan du se det kan du kopiera det - alltsÃ¥ kan vi spara ner informationen pÃ¥ din dator. Att det sedan blir en perfekt digital kopia Ã¤r bara en bonus av kopimi.
+Hur laddar jag ner frÃ¥n SVT Play?
+I mjukvarans nuvarande stadie behÃ¶ver du kÃ¶ra ett POSIX-kompatibelt operativsystem dÃ¤r man kan installera de fria mjukvarorna bash, curl och rtmpdump. Absolut mest rekommenderat Ã¤r Ubuntu Linux, ett gratis och fritt operativsystem som installeras pÃ¥ en timme eller sÃ¥. Ett annat tips Ã¤r att be nÃ¥gon datornÃ¶rd i din nÃ¤rhet att hjÃ¤lpa till.
+NÃ¤r du anvÃ¤nder LinuxmiljÃ¶n behÃ¶ver du bara ladda hem scriptet och starta det med en adress till SVT Play:
 
 	$ wget "https://github.com/mmn/svtget/raw/master/bash/svtget"
 	$ bash svtget http://svtplay.se/v/2440756/k_special/presspauseplay
@@ -25,22 +25,22 @@ När du använder Linuxmiljön behöver du bara ladda hem scriptet och starta det me
 	Which file do you want? [#] 3
 
 
-Här anger man sedan vilken kvalitet man ska ladda hem i. De kvaliteter som erbjuds är samma som erbjuds på hemsidan, där 2400 kbps (som ej syns i detta fall) är HD 720P, medan 850 kbps är den lite behändigare 640x360-varianten. Filen sparas sedan i den mapp du befinner dig i (vanligtvis ~/)
+HÃ¤r anger man sedan vilken kvalitet man ska ladda hem i. De kvaliteter som erbjuds Ã¤r samma som erbjuds pÃ¥ hemsidan, dÃ¤r 2400 kbps (som ej syns i detta fall) Ã¤r HD 720P, medan 850 kbps Ã¤r den lite behÃ¤ndigare 640x360-varianten. Filen sparas sedan i den mapp du befinner dig i (vanligtvis ~/)
 
 
-Vad är syftet?
+Vad Ã¤r syftet?
 ===================
 
-Dels politiskt. Tycker man om fri kultur och mjukvara bör man gå med i Piratpartiet och kämpa för rätten att använda, modifiera och distribuera. Alternativt aktivera sig inom ett annat parti och arbeta för samma mål. Det är informationsamhällets framtid det handlar om - och ett blivande kunskapssamhälle.
-Fast egentligen är syftet mest av praktiskt art. Idén poppade upp när jag inte hade en tv för att titta på dokumentären Press Pause Play, som alltså visades på SVT. Som tur är så har dock SVT framåtanda i dagens tekniska samhälle och tillgängliggjorde filmen på sin hemsida, som strömbar video. Problemet är att strömbar video - trots att det är som vilken videofil som helst - ofta är krångligare att ladda ner - och detta kände jag var nödvändigt eftersom platsen jag ville se filmen på saknade en stabil internetuppkoppling. Och filmen fanns inte ens på The Pirate Bay.
-Syftet med scriptet är alltså kort och gott att underlätta en lokal cache för besökare på SVT Play. Video som är lagligt tillgänglig i "strömmande format" kan arkiveras på den enskilda individens dator av bekvämlighetsskäl. Rent juridiskt är detta ett klockrent fall av privatkopiering och därmed helt lovligt trots dagens i övrigt knäppa upphovsrättslagstiftning:
+Dels politiskt. Tycker man om fri kultur och mjukvara bÃ¶r man gÃ¥ med i Piratpartiet och kÃ¤mpa fÃ¶r rÃ¤tten att anvÃ¤nda, modifiera och distribuera. Alternativt aktivera sig inom ett annat parti och arbeta fÃ¶r samma mÃ¥l. Det Ã¤r informationsamhÃ¤llets framtid det handlar om - och ett blivande kunskapssamhÃ¤lle.
+Fast egentligen Ã¤r syftet mest av praktiskt art. IdÃ©n poppade upp nÃ¤r jag inte hade en tv fÃ¶r att titta pÃ¥ dokumentÃ¤ren Press Pause Play, som alltsÃ¥ visades pÃ¥ SVT. Som tur Ã¤r sÃ¥ har dock SVT framÃ¥tanda i dagens tekniska samhÃ¤lle och tillgÃ¤ngliggjorde filmen pÃ¥ sin hemsida, som strÃ¶mbar video. Problemet Ã¤r att strÃ¶mbar video - trots att det Ã¤r som vilken videofil som helst - ofta Ã¤r krÃ¥ngligare att ladda ner - och detta kÃ¤nde jag var nÃ¶dvÃ¤ndigt eftersom platsen jag ville se filmen pÃ¥ saknade en stabil internetuppkoppling. Och filmen fanns inte ens pÃ¥ The Pirate Bay.
+Syftet med scriptet Ã¤r alltsÃ¥ kort och gott att underlÃ¤tta en lokal cache fÃ¶r besÃ¶kare pÃ¥ SVT Play. Video som Ã¤r lagligt tillgÃ¤nglig i "strÃ¶mmande format" kan arkiveras pÃ¥ den enskilda individens dator av bekvÃ¤mlighetsskÃ¤l. Rent juridiskt Ã¤r detta ett klockrent fall av privatkopiering och dÃ¤rmed helt lovligt trots dagens i Ã¶vrigt knÃ¤ppa upphovsrÃ¤ttslagstiftning:
 
-	Privatkopiering är en populär term för den kopiering som är tillåten att företa på annars upphovsrättsligt skyddade verk. Förutsättningarna för att få privatkopiera anges i 12§ upphovsrättslagen. Exempel på privatkopiering kan vara att göra en kopia av en CD-skiva att använda i bilen, att lägga över musikfiler på sin MP3-spelare eller dator. Man har inte rätt att vidare distribuera privatkopierat material mer än i en mycket begränsad omfattning (exempelvis till en enstaka vän).
+	Privatkopiering Ã¤r en populÃ¤r term fÃ¶r den kopiering som Ã¤r tillÃ¥ten att fÃ¶reta pÃ¥ annars upphovsrÃ¤ttsligt skyddade verk. FÃ¶rutsÃ¤ttningarna fÃ¶r att fÃ¥ privatkopiera anges i 12Â§ upphovsrÃ¤ttslagen. Exempel pÃ¥ privatkopiering kan vara att gÃ¶ra en kopia av en CD-skiva att anvÃ¤nda i bilen, att lÃ¤gga Ã¶ver musikfiler pÃ¥ sin MP3-spelare eller dator. Man har inte rÃ¤tt att vidare distribuera privatkopierat material mer Ã¤n i en mycket begrÃ¤nsad omfattning (exempelvis till en enstaka vÃ¤n).
 
 
 Vem utvecklar SVT Get?
 ===========================
 
-Det ursprungliga bash-scriptet skrevs av Mikael "MMN-o" Nordfeldth, vars diverse skriverier ni kan följa på blog.mmn-o.se. Utvecklingen därefter kan följas från diverse forkade projekt, förhoppningsvis centrerat kring projektet på GitHub.
-Andra nämnvärda personer med relevant koppling till projektet är bl.a. @sikevux.
-Den fria mjukvaran SVTGet är skyddad av upphovsrättslagen enligt GPLv3. Samtlig text tillhörande projektet, hemsidan och sådant är licensierat Creative Commons Erkännande-DelaLika. Det är med dessa principer upphovsrätt bör fungera automatiskt, men tyvärr inte gör. Förhoppningen för framtiden är väl att SVT ska satsa mer på Creative Commons, för då har de rättigheterna att sprida vidare filmer och samhället behöver inte riskera att förlora sin kulturhistoria.
+Det ursprungliga bash-scriptet skrevs av Mikael "MMN-o" Nordfeldth, vars diverse skriverier ni kan fÃ¶lja pÃ¥ blog.mmn-o.se. Utvecklingen dÃ¤refter kan fÃ¶ljas frÃ¥n diverse forkade projekt, fÃ¶rhoppningsvis centrerat kring projektet pÃ¥ GitHub.
+Andra nÃ¤mnvÃ¤rda personer med relevant koppling till projektet Ã¤r bl.a. @sikevux.
+Den fria mjukvaran SVTGet Ã¤r skyddad av upphovsrÃ¤ttslagen enligt GPLv3. Samtlig text tillhÃ¶rande projektet, hemsidan och sÃ¥dant Ã¤r licensierat Creative Commons ErkÃ¤nnande-DelaLika. Det Ã¤r med dessa principer upphovsrÃ¤tt bÃ¶r fungera automatiskt, men tyvÃ¤rr inte gÃ¶r. FÃ¶rhoppningen fÃ¶r framtiden Ã¤r vÃ¤l att SVT ska satsa mer pÃ¥ Creative Commons, fÃ¶r dÃ¥ har de rÃ¤ttigheterna att sprida vidare filmer och samhÃ¤llet behÃ¶ver inte riskera att fÃ¶rlora sin kulturhistoria.
