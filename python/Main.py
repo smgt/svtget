@@ -13,9 +13,7 @@ if lurl.startswith("http://svt") is not True:
 	print("Bad URL. Not SVT Play?")
 	sys.exit()
 
-url = urllib.parse.urlencode({"url" : lurl})
-url = url.encode('utf-8')
-url = "http://svtget.se/get/get.php?" + str(url, 'utf-8')
+url = "http://svtget.se/get/get.php?" + str(urllib.parse.urlencode({"url" : lurl}).encode('utf-8'), 'utf-8')
 HTTP_socket = urllib.request.urlopen(url)
 HTML_source = HTTP_socket.read().decode('utf-8')
 HTTP_socket.close()
@@ -25,7 +23,7 @@ moo = json.load(io)
 print("#	Bitrate	Filename")
 n=0
 for tcUrl in moo['tcUrls']:
-	print(n, "	" + stream[1] + "	" + stream[0])
+	print(n, "	" + tcUrl[1] + "	" + tcUrl[0])
 	n+=1
 stream = moo['tcUrls']
 lfile = moo['program_name'] + ".mp4"
