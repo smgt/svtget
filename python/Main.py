@@ -27,9 +27,9 @@ n=0
 for tcUrl in moo['tcUrls']:
 	print(n, "	" + stream[1] + "	" + stream[0])
 	n+=1
-stream = moo['streams']
+stream = moo['tcUrls']
 lfile = moo['program_name'] + ".mp4"
 userinput = int(input("Which file do you want? [#] "))
-get = tcUrl[userinput][0]
+get = stream[userinput][0]
 print ("Running RTMPDump for " + get + " and saving it as " + lfile)
 os.system('rtmpdump -r ' + get + ' --swfVfy=' + moo['swfUrl'] + ' -o ' + lfile)
