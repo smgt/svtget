@@ -41,11 +41,9 @@ if [[ ! "$1" =~ http://svt ]]; then
 	exit
 fi
 
-TMP_FILE="/tmp/svtget.$$"
-curl -s "$1" -o "$TMP_FILE"
-SVTPLAY_SWF="http://svtplay.se$(grep 'application/x-shockwave-flash' $TMP_FILE | cut -d\" -f4)"
-SVTGET_STREAMS=$(sed "s/\(rtmp[e]\?:[^|]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" $TMP_FILE | grep rtmp | sort | uniq )
-rm "$TMP_FILE"
+SVTPLAY_HTML=`curl -s "$1"`
+swfUrl="http://svtplay.se$(echo $SVTPLAY_HTML | grep 'application/x-shockwave-flash' | cut -d\" -f4)"
+SVTGET_STREAMS=$(echo $SVTPLAY_HTML | sed "s/\(rtmp[e]\?:[^|&]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" | grep rtmp | sort | uniq )
 
 if [ -z "$SVTGET_STREAMS" ]; then
 	echo "ERROR: No rtmp streams found. Website structure changed?"
@@ -53,12 +51,9 @@ if [ -z "$SVTGET_STREAMS" ]; then
 	exit 1
 fi
 
-#echo "Using SWF for rtmpdump --swfVfy: $SVTPLAY_SWF"
-
 echo "#  Bitrate	Filename"
-let n=0
+let n=1
 for STREAM in $SVTGET_STREAMS; do
-	let n++
 	BITRATE=`echo $STREAM | cut -d '|' -f 1 -`
 	expr $BITRATE + 1 &> /dev/null
 	if [ $? -gt 0 ] || [ "$BITRATE" -eq 0 ]; then
@@ -69,6 +64,7 @@ for STREAM in $SVTGET_STREAMS; do
 	echo "$n. ${BITRATE} kbps	$FILENAME"
 	Streams[$n]="$URL"
 	Filenames[$n]="$FILENAME"
+	let n++
 done
 
 stream=0
@@ -83,4 +79,4 @@ done
 
 echo Running RTMPDump for "${Streams[$stream]}" and saving to "${Filenames[$stream]}"
 
-rtmpdump -r "${Streams[$stream]}" --swfVfy="$SVTPLAY_SWF" -o "${Filenames[$stream]}"
+rtmpdump -r "${Streams[$stream]}" --swfVfy="$swfUrl" -o "${Filenames[$stream]}"
