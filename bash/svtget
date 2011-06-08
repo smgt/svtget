@@ -23,60 +23,101 @@
 # Sample usage:
 # ./svtget http://svtplay.se/v/2440756/k_special/presspauseplay
 
-DEPENDENCIES="rtmpdump curl"
+DEPENDENCIES="rtmpdump curl sed cut bash"
 for DEP in $DEPENDENCIES; do
 	if [ -z "`which $DEP`" ]; then
-		echo "ERROR: Missing dependency '$DEP'."
+		echo "ERROR: Missing dependency '$DEP'." >&2
 		exit
 	fi
 done
 
-if [ -z "$1" ]; then
-	echo "Usage: $0 http://svtplay.se/v/..."
+# Available bitrates: 320 850 1400 2400
+BITRATE=""
+function set_bitrate {
+	case $1 in
+	l)	BITRATE=320	;;
+	m)	BITRATE=850	;;
+	n)	BITRATE=1400	;;
+	h)	BITRATE=2400	;;
+	320|850|1400|2400)
+		BITRATE=$1	;;
+	*)
+		echo "Bad quality setting ($1), keeping setting '$BITRATE'"
+		;;
+	esac
+}
+
+function get_tcUrl {
+	local html=$1
+	local bitrate=$2
+	expr "$bitrate" + 1 &> /dev/null
+	if [ $? -gt 0 ] || [ -z "$bitrate" ] || [ "$bitrate" -eq 0 ]; then
+		bitrate='[0-9]\+'
+	fi
+	echo $html | sed "s/\(rtmp[e]\?:[^|&]*\),bitrate:\($bitrate\)/\\n\2|\1\\n/g" | grep -E '^[[:digit:]]+\|' | sort -n | uniq 
+}
+
+function pick_tcUrl {
+	echo "#  Bitrate	Filename" >&2
+	let n=1
+	for STREAM in $@; do
+		BITRATE=`echo $STREAM | cut -d '|' -f 1 -`
+		Streams[$n]=`echo $STREAM | cut -d '|' -f 2 -`
+		FILENAME=`basename $STREAM`
+		echo "$n. ${BITRATE} kbps	$FILENAME" >&2
+		let n++
+	done
+	
+	stream=0
+	if [ "$#" -eq 1 ]; then
+		stream=1
+	fi
+	while [ -z ${Streams[$stream]} ]; do
+		echo -ne "\nWhich file do you want? [#] "
+		read stream
+		if [ -n "$stream" ] && [ "q" == "$stream" ]; then
+			exit
+		fi
+	done
+	tcUrl=${Streams[$stream]}
+}
+
+while getopts "q:" opt; do
+	case $opt in
+	q)
+		set_bitrate $OPTARG
+		;;
+	\?)
+		echo "invalid option: -$OPTARG" >&2
+		exit 1
+		;;
+	esac
+done
+
+pageUrl=${!#}
+if [ -z "$pageUrl" ]; then
+	echo "Usage: $0 [-q l|m|n|h] http://svtplay.se/v/..." >&2
 	exit 1
 fi
 
-if [[ ! "$1" =~ http://svt ]]; then
-	echo "Bad URL. Not SVT Play?"
-	exit
-fi
-
-SVTPLAY_HTML=`curl -s "$1"`
-swfUrl="http://svtplay.se$(echo $SVTPLAY_HTML | grep 'application/x-shockwave-flash' | cut -d\" -f4)"
-SVTGET_STREAMS=$(echo $SVTPLAY_HTML | sed "s/\(rtmp[e]\?:[^|&]*\),bitrate:\([0-9]\+\)/\n\2|\1\n/g" | grep rtmp | sort | uniq )
-
-if [ -z "$SVTGET_STREAMS" ]; then
-	echo "ERROR: No rtmp streams found. Website structure changed?"
-	echo "Please visit http://svtget.se/ for updates and information. If the website's down, use a search engine to find copies."
+if [[ ! "$pageUrl" =~ http://svtplay.se ]]; then
+	echo "Bad URL. Not SVT Play?" >&2
 	exit 1
 fi
 
-echo "#  Bitrate	Filename"
-let n=1
-for STREAM in $SVTGET_STREAMS; do
-	BITRATE=`echo $STREAM | cut -d '|' -f 1 -`
-	expr $BITRATE + 1 &> /dev/null
-	if [ $? -gt 0 ] || [ "$BITRATE" -eq 0 ]; then
-		continue
-	fi
-	URL=`echo $STREAM | cut -d '|' -f 2 -`
-	FILENAME=`echo $STREAM | cut -d '/' -f8 -`
-	echo "$n. ${BITRATE} kbps	$FILENAME"
-	Streams[$n]="$URL"
-	Filenames[$n]="$FILENAME"
-	let n++
-done
+HTML=`curl -s "$pageUrl"`
+swfUrl="http://svtplay.se$(echo $HTML | sed 's/.*x-shockwave-flash" data="\([^"]\+\)\".*/\1/')"
+echo $swfUrl
+tcUrls=$(get_tcUrl "$HTML" "$BITRATE")
+if [ -z "$tcUrls" ]; then
+	echo "ERROR: No rtmp streams found. No clip in that quality?
+Please visit http://svtget.se/ for updates and information. If the website's down, use a search engine to find copies." >&2
+	exit 1
+fi
 
-stream=0
-while [ -z ${Streams[$stream]} ]; do
-	echo ""
-	echo -n "Which file do you want? [#] "
-	read stream
-	if [ -n "$stream" ] && [ "q" == "$stream" ]; then
-		exit
-	fi
-done
+pick_tcUrl $tcUrls
 
-echo Running RTMPDump for "${Streams[$stream]}" and saving to "${Filenames[$stream]}"
+filename=`basename $tcUrl`
+echo Running RTMPDump for "$tcUrl" and saving to "$filename"
 
-rtmpdump -r "${Streams[$stream]}" --swfVfy="$swfUrl" -o "${Filenames[$stream]}"
+rtmpdump -r "$tcUrl" --swfVfy="$swfUrl" -o "$filename"
