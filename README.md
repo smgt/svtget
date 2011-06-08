@@ -6,11 +6,15 @@ Vad gör SVT Get?
 ===================
 Eftersom SVT Get är fri mjukvara kan du granska källkoden direkt. För närvarande fungerar det genom att använda sig av andra fria mjukvaror, såsom bash, curl och rtmpdump, för att ladda hem och tolka hemsidan SVTPlay.se.
 
-Hos SVT Play så finns all information man behöver för att ladda hem deras videoklipp. Det känns ganska självklart egentligen, men många tror att "streaming" är något annat än "nedladdning" - men oavsett vad du gör så får du hem informationen till din dator. Kan du se det kan du kopiera det - alltså kan vi spara ner informationen på din dator. Att det sedan blir en perfekt digital kopia är bara en bonus av kopimi. 
+
+Hos SVT Play så finns all information man behöver för att ladda hem deras videoklipp. Det känns ganska självklart egentligen, men många tror att "streaming" är något annat än "nedladdning" - men oavsett vad du gör så får du hem informationen till din dator.
+Kan du se det kan du kopiera det - alltså kan vi spara ner informationen på din dator. Att det sedan blir en perfekt digital kopia är bara en bonus av kopimi. 
+
 
 Hur laddar jag ner från SVT Play?
 ==================================
-I mjukvarans nuvarande stadie behöver du köra ett POSIX-kompatibelt operativsystem där man kan installera de fria mjukvarorna bash, curl och rtmpdump. Absolut mest rekommenderat är Ubuntu Linux, ett gratis och fritt operativsystem som installeras på en timme eller så. Ett annat tips är att be någon datornörd i din närhet att hjälpa till.
+I mjukvarans nuvarande stadie behöver du köra ett POSIX-kompatibelt operativsystem där man kan installera de fria mjukvarorna bash, curl och rtmpdump.
+Absolut mest rekommenderat är Ubuntu Linux, ett gratis och fritt operativsystem som installeras på en timme eller så. Ett annat tips är att be någon datornörd i din närhet att hjälpa till.
 
 När du använder Linuxmiljön behöver du bara ladda hem scriptet och starta det med en adress till SVT Play:
 
