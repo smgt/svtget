@@ -39,7 +39,7 @@ function get_url_contents($url) {
 	return $html;
 }
 
-function get_swf_url($html) {
+function get_swfUrl($html) {
 	if ( ! preg_match ('/data="([^"]+.swf)"/', $html, $swf) )
 		throw new Exception('Unable to find player swf, is URL working?');
 
@@ -58,19 +58,22 @@ function get_rtmp_streams($html) {
 }
 
 try {
-	$url = svtget_parse_url($_GET['url']);
-	$html = get_url_contents($url);
-	$swf_url = get_swf_url($html);
+	$pageUrl = svtget_parse_url($_GET['url']);
+	$html = get_url_contents($pageUrl);
+	$swfUrl = get_swfUrl($html);
 	$streams = get_rtmp_streams($html);
 } catch (Exception $e) {
 	http_error(400, $e->getmessage());
 }
 	
 	$program_name = basename($url);
+	/* pageUrl, swfUrl, tcUrl are names from Adobe RTMP specification */
 	$svtget_result = array(
+		'app' => 'SVT Play',
 		'program_name' => $program_name,
-		'swf_url' => $swf_url,
-		'streams' => $streams,
+		'pageUrl' => $pageUrl,
+		'swfUrl' => $swfUrl,
+		'tcUrls' => $streams,
 		);
 
 	echo json_encode($svtget_result);

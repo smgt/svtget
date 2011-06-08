@@ -24,12 +24,12 @@ moo = json.load(io)
 
 print("#	Bitrate	Filename")
 n=0
-for stream in moo['streams']:
+for tcUrl in moo['tcUrls']:
 	print(n, "	" + stream[1] + "	" + stream[0])
 	n+=1
 stream = moo['streams']
 lfile = moo['program_name'] + ".mp4"
 userinput = int(input("Which file do you want? [#] "))
-get = stream[userinput][0]
+get = tcUrl[userinput][0]
 print ("Running RTMPDump for " + get + " and saving it as " + lfile)
-os.system('rtmpdump -r ' + get + ' --swfVfy=' + moo['swf_url'] + ' -o ' + lfile)
+os.system('rtmpdump -r ' + get + ' --swfVfy=' + moo['swfUrl'] + ' -o ' + lfile)
