@@ -8,26 +8,33 @@ import json
 import os
 import sys
 
-lurl = str(input("URL to the stream "))
-if lurl.startswith("http://svt") is not True:
+user_input_url = str(input("URL to the stream "))
+
+if user_input_url.startswith("http://svt") is not True:
 	print("Bad URL. Not SVT Play?")
 	sys.exit()
 
-url = "http://svtget.se/get/get.php?" + str(urllib.parse.urlencode({"url" : lurl}).encode('utf-8'), 'utf-8')
-HTTP_socket = urllib.request.urlopen(url)
+final_url = "http://svtget.se/get/get.php?" + str(urllib.parse.urlencode({"url" : user_input_url}).encode('utf-8'), 'utf-8')
+HTTP_socket = urllib.request.urlopen(final_url)
 HTML_source = HTTP_socket.read().decode('utf-8')
 HTTP_socket.close()
 io = io.StringIO(HTML_source)
-moo = json.load(io)
+json_data = json.load(io)
 
 print("#	Bitrate	Filename")
+
 n=0
-for tcUrl in moo['tcUrls']:
+
+for tcUrl in json_data['tcUrls']:
 	print(n, "	" + tcUrl[1] + "	" + tcUrl[0])
 	n+=1
-stream = moo['tcUrls']
-lfile = moo['program_name'] + ".mp4"
-userinput = int(input("Which file do you want? [#] "))
-get = stream[userinput][0]
-print ("Running RTMPDump for " + get + " and saving it as " + lfile)
-os.system('rtmpdump -r ' + get + ' --swfVfy=' + moo['swfUrl'] + ' -o ' + lfile)
+
+stream = json_data['tcUrls']
+
+lfile = json_data['program_name'] + ".mp4"
+
+user_input_n = int(input("Which file do you want? [#] "))
+
+print("Running RTMPDump on " + json_data['tcUrls'][user_input_n][0] + " and saving it as " + json_data['program_name'] + ".mp4")
+
+os.system('rtmpdump -r ' + json_data['tcUrls'][user_input_n][0] + ' --swfVfy=' + json_data['swfUrl'] + ' -o ' + json_data['program_name'] + '.mp4')
