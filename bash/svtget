@@ -47,7 +47,7 @@ function set_bitrate {
 	esac
 }
 
-function get_tcUrl {
+function get_tcUrls {
 	local html=$1
 	local bitrate=$2
 	expr "$bitrate" + 1 &> /dev/null
@@ -58,13 +58,13 @@ function get_tcUrl {
 }
 
 function pick_tcUrl {
-	echo "#  Bitrate	Filename" >&2
+	echo "#  Bitrate	Stream name" >&2
 	let n=1
 	for STREAM in $@; do
-		BITRATE=`echo $STREAM | cut -d '|' -f 1 -`
+		local BITRATE=`echo $STREAM | cut -d '|' -f 1 -`
 		Streams[$n]=`echo $STREAM | cut -d '|' -f 2 -`
-		FILENAME=`basename $STREAM`
-		echo "$n. ${BITRATE} kbps	$FILENAME" >&2
+		local NAME=`basename $STREAM`
+		echo "$n. ${BITRATE} kbps	$NAME" >&2
 		let n++
 	done
 	
@@ -107,8 +107,7 @@ fi
 
 HTML=`curl -s "$pageUrl"`
 swfUrl="http://svtplay.se$(echo $HTML | sed 's/.*x-shockwave-flash" data="\([^"]\+\)\".*/\1/')"
-echo $swfUrl
-tcUrls=$(get_tcUrl "$HTML" "$BITRATE")
+tcUrls=$(get_tcUrls "$HTML" "$BITRATE")
 if [ -z "$tcUrls" ]; then
 	echo "ERROR: No rtmp streams found. No clip in that quality?
 Please visit http://svtget.se/ for updates and information. If the website's down, use a search engine to find copies." >&2
@@ -117,7 +116,11 @@ fi
 
 pick_tcUrl $tcUrls
 
-filename=`basename $tcUrl`
+extension="mp4"
+if [ "$extension" != "${tcUrl##*.}" ]; then
+	extension="flv"
+fi
+filename="$(basename $pageUrl).$extension"
 echo Running RTMPDump for "$tcUrl" and saving to "$filename"
 
 rtmpdump -r "$tcUrl" --swfVfy="$swfUrl" -o "$filename"
