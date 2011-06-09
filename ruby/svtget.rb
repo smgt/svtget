@@ -1,5 +1,19 @@
 #!/usr/bin/env ruby
 
+# SVTGet v0.5 in ruby
+# Updates can be found at https://github.com/mmn/svtplay
+#
+# Description: The script can download the RTMP streams available from the
+# online streaming service "SVT Play", managed by Sveriges Television
+#
+# Original author: Simon Gate
+# License: GPLv3
+# http://www.gnu.org/licenses/gpl-3.0.txt
+#
+# The original bash script was created by Mikael "MMN-o" Nordfeldth
+# URL: http://blog.mmn-o.se/
+# Flattr: https://flattr.com/thing/188162/MMN-o-on-Flattr
+
 require 'optparse'
 require "net/http"
 require 'uri'
