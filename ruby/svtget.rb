@@ -4,12 +4,14 @@ require 'optparse'
 require "net/http"
 require 'uri'
 
+# Available bitrates at svtplay
 bitrate = {:l => 320, :m => 850, :n => 1400, :h => 2400}
 options = {}
 
 # Set default bitrate
 options[:bitrate] = bitrate[:n]
 
+# Options
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: svtplay.rb [options] URL"
 
@@ -38,9 +40,16 @@ end
 
 optparse.parse!
 
+# Check if SVT play URL was given, else DIE!
 if !ARGV[0].nil? && ARGV[0].match(/svtplay\.se/)
+
+  # Get the HTML of the URL supplied 
   html = Net::HTTP.get URI.parse(ARGV[0])
+
+  # Parse rtmp streams and bitrate
   streams = html.scan(/(rtmp[e]?:[^|&]+),bitrate:([0-9]+)/m)
+
+  # Find the swf player
   player = "http://svtplay.se" + html.scan(/data="([^"]+.swf)/).to_s
 
   # Selecting best available stream based on availablity and user selection
@@ -57,20 +66,25 @@ if !ARGV[0].nil? && ARGV[0].match(/svtplay\.se/)
 
   # Informing the download quality
   if(options[:bitrate] > stream_bitrate)
-    puts "#{options[:bitrate]} ain't available, downloading #{stream_bitrate}..."
+    puts "#{options[:bitrate]}kbs is not available, downloading #{stream_bitrate}kbs stream...\n"
   elsif options[:bitrate] == stream_bitrate
-    puts "Downloading #{stream_bitrate}..."
+    puts "Downloading #{stream_bitrate}kbs stream...\n"
   end
-  
+
+  # Find stream with correct bitrate
   stream = streams.rassoc(stream_bitrate.to_s)
+
+  # Default fileextension
   extension = ".mp4"
+
+  # If not mp4 set .flv
   extension = ".flv" if(!(stream[0] =~ /mp4/))
-  puts "#{stream[0]}.#{extension}"
-  puts "#{stream[0].split("/").last}"
+
+  # Start downloading the stream
   system("rtmpdump -r #{stream[0]} -W #{player} -o #{stream[0].split("/").last + extension}")
 
 else
-  puts "You must supply a svtplay URL..."
+  puts "You must supply a SVT play URL..."
   puts optparse
   exit
 end
