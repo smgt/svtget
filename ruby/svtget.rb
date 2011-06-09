@@ -78,7 +78,7 @@ if !ARGV[0].nil? && ARGV[0].match(/svtplay\.se/)
   extension = ".mp4"
 
   # If not mp4 set .flv
-  extension = ".flv" if(!(stream[0] =~ /mp4/))
+  extension = ".flv" if(!(stream[0] =~ /mp4$/))
 
   # Start downloading the stream
   system("rtmpdump -r #{stream[0]} -W #{player} -o #{stream[0].split("/").last + extension}")
