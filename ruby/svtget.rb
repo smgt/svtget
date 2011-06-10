@@ -20,10 +20,14 @@ require 'uri'
 
 # Available bitrates at svtplay
 bitrate = {:l => 320, :m => 850, :n => 1400, :h => 2400}
+
 options = {}
 
 # Set default bitrate
 options[:bitrate] = bitrate[:n]
+
+# Set to non silent
+options[:silent] = false
 
 # Options
 optparse = OptionParser.new do |opts|
@@ -43,6 +47,10 @@ optparse = OptionParser.new do |opts|
 
   opts.on("-h", "--high", "High quality") do
     options[:bitrate] = bitrate[:h]
+  end
+
+  opts.on("--silent", "Don't output any information") do
+    options[:silent] = true
   end
 
   opts.on("--help", "Show this help") do
@@ -80,9 +88,9 @@ if !ARGV[0].nil? && ARGV[0].match(/svtplay\.se/)
 
   # Informing the download quality
   if(options[:bitrate] > stream_bitrate)
-    puts "#{options[:bitrate]}kbs is not available, downloading #{stream_bitrate}kbs stream...\n"
+    puts "#{options[:bitrate]}kbs is not available, downloading #{stream_bitrate}kbs stream...\n" unless options[:silent]
   elsif options[:bitrate] == stream_bitrate
-    puts "Downloading #{stream_bitrate}kbs stream...\n"
+    puts "Downloading #{stream_bitrate}kbs stream...\n" unless options[:silent]
   end
 
   # Find stream with correct bitrate
@@ -95,7 +103,12 @@ if !ARGV[0].nil? && ARGV[0].match(/svtplay\.se/)
   extension = ".flv" if(!(stream[0] =~ /mp4$/))
 
   # Start downloading the stream
-  system("rtmpdump -r #{stream[0]} -W #{player} -o #{stream[0].split("/").last + extension}")
+  command  = "rtmpdump -r #{stream[0]} -W #{player} -o #{stream[0].split("/").last + extension}"
+  if options[:silent]
+    system("#{command} > /dev/null 2>&1")
+  else
+    system(command)
+  end
 
 else
   puts "You must supply a SVT play URL..."
