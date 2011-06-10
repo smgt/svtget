@@ -18,6 +18,12 @@ require 'optparse'
 require "net/http"
 require 'uri'
 
+# Check if rtmpdump is installed
+if !system("which rtmpdump > /dev/null 2>&1")
+  puts "#{File.basename(__FILE__)} is depending on rtmpdump, please install it and #{File.basename(__FILE__)} will start working."
+  exit 1
+end
+
 # Available bitrates at svtplay
 bitrate = {:l => 320, :m => 850, :n => 1400, :h => 2400}
 
